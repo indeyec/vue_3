@@ -14,7 +14,7 @@
 <div id="app" >
         
         
-        <button @click="modal" >Create</button>
+        <button v-on:click="modal" >Create</button>
         <hr>
     <div class="ded">
                 <div class="col" >
@@ -22,7 +22,7 @@
                     <hr>
                     <note :types="types[0]"></note>
                 </div>
-                    <div class="col border-end border-start" >
+                    <div class="col border-end border-start " >
                         <h4>Task in work:</h4>
                         <hr>
                         <note :types="types[1]"></note>

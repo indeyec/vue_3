@@ -6,7 +6,7 @@ Vue.component('create-note', {
             <ul>
                 <li v-for="error in errors">{{error}}</li>
             </ul>
-            <form class="d-flex flex-column mt-4 " @submit.prevent="createNote">
+            <form class="d-flex flex-column mt-4 " v-on:submit.prevent="createNote">
                 <fieldset>
                     <input class="form-control mb-3" type="text" placeholder="Name" v-model="title">
                     <div class="form-floating mb-3">
@@ -18,13 +18,26 @@ Vue.component('create-note', {
                         <input class="mt-3" name="deadline" type="date" min="2023-01-01" v-model="dateDeadline">
                     </div>
                     <input v-if="!update" class="btn btn-primary" type="submit" value="Создать">
-                    <input v-if="update" class="btn btn-primary" @click="updateNote" @click="modal" value="Изменить">
-                    <div v-if="!update" class="btn btn-danger ms-4" @click="modal">Закрыть форму</div>
+                    <input v-if="update" class="btn btn-primary" v-on:click="updateNote" v-on:click="modal" value="Изменить">
+                    <div v-if="!update" class="btn btn-danger ms-4" v-on:click="modal">Закрыть форму</div>
                 </fieldset>
             </form>
         </div>
     `,
     methods: {
+        openUpdateNote() {
+            let display = true
+            eventBus.$emit('update-display', display)
+            let deadline = this.note.dateDeadline.split('.')
+            this.noteId = this.note.noteId
+            this.title = this.note.title
+            this.description = this.note.description
+            this.dateDeadline = deadline[2] + '-' + deadline[1] + '-' + deadline[0]
+        },
+        modal() {
+            let displayModal = false
+            eventBus.$emit('getModal', displayModal)
+        },
         createNote() {
             if (this.title && this.description && this.dateDeadline) {
                 let inputDate = this.dateDeadline.split('-')
@@ -81,19 +94,8 @@ Vue.component('create-note', {
                 if (!this.dateDeadline) this.errors.push("Введите дату дэдлайна!")
             }
         },
-        openUpdateNote() {
-            let display = true
-            eventBus.$emit('update-display', display)
-            let deadline = this.note.dateDeadline.split('.')
-            this.noteId = this.note.noteId
-            this.title = this.note.title
-            this.description = this.note.description
-            this.dateDeadline = deadline[2] + '-' + deadline[1] + '-' + deadline[0]
-        },
-        modal() {
-            let displayModal = false
-            eventBus.$emit('getModal', displayModal)
-        }
+        
+        
     },
     mounted() {
         eventBus.$on('update-note', note => {
@@ -139,15 +141,15 @@ Vue.component('note', {
                     <p><hr>
                     Дата создания: {{ note.dateCreate }}<br>
                     Дэдлайн: {{ note.dateDeadline }} - {{ note.compliteInTime }}<br>
-                    <span v-if="note.dateUpdate.length != 0">Дата изменения: {{ note.dateUpdate }}</span>
+                    <span v-if="note.dateUpdate.length != 0">Redact date: {{ note.dateUpdate }}</span>
                     <hr>
                     </p>
                     <p v-if="note.comment.length > 0">Comments:<br>{{ note.comment }}</p>
                     <div v-if="note.type != 'col-4'">
-                        <span class="btn btn-warning" @click="noteUpdate(note)">Redact</span>
+                        <span class="btn btn-warning" v-on:click="noteUpdate(note)">Redact</span>
                         <div class="mt-2">
-                            <span class="btn btn-success" @click="changeType(note)">Next</span>
-                            <span v-if="note.type == 'col-3'" class="btn btn-danger" @click="comeBack(note)">Назад</span>
+                            <span class="btn btn-success" v-on:click="changeType(note)">Next</span>
+                            <span v-if="note.type == 'col-3'" class="btn btn-danger" v-on:click="comeBack(note)">back</span>
                             <div class="mt-3" v-if="note.type == 'col-3'">
                                 <form>
                                     <div class="form-floating mb-3">
@@ -164,6 +166,13 @@ Vue.component('note', {
     `,
     
     methods: {
+        comeBack(note) {
+            if (this.comment ) {
+                note.comment = this.comment
+                note.type = 'col-2'
+                this.comment = ''
+            }
+        },
         deleteNote(id) {
             for (note in this.notes) {
                 if (this.notes[note].noteId == id) {
@@ -197,13 +206,7 @@ Vue.component('note', {
                 }
             }
         },
-        comeBack(note) {
-            if (this.comment ) {
-                note.comment = this.comment
-                note.type = 'col-2'
-                this.comment = ''
-            }
-        }
+        
     },
     mounted() {
         eventBus.$on('note-created', note => {
