@@ -1,0 +1,54 @@
+
+
+
+
+
+body::-webkit-scrollbar {
+    display: none;
+} 
+
+.color-white {
+    color: white;
+}
+
+.markPoint {
+    text-decoration: line-through;
+}
+
+.display {
+    display: none;
+}
+
+.modal {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#create-note {
+    width: 800px;
+}
+
+.comeback {
+    height: 150px;
+    width: 300px;
+}
+
+.card-enter {
+    animation: .6s card ease ;
+}
+
+/* @keyframes card {
+    from {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(35px);
+    }
+    to {
+        transform: translateY(0px);
+    }
+} */
