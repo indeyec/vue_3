@@ -6,15 +6,15 @@ Vue.component('create-note', {
             <ul>
                 <li v-for="error in errors">{{error}}</li>
             </ul>
-            <form class="d-flex flex-column mt-4 " v-on:submit.prevent="createNote">
+            <form class="d-flex flex-column  " v-on:submit.prevent="createNote">
                 <fieldset>
-                    <input class="form-control mb-3" type="text" placeholder="Name" v-model="title">
+                    <input class="form-control mb-3"style="border-radius:30px" type="text" placeholder="Name" v-model="title">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="textarea" style="height: 100px; resize: none;" v-model="description"></textarea>
+                        <textarea class="form-control" id="textarea" style="height: 100px; resize: none; border-radius:30px" v-model="description"></textarea>
                         <label for="textarea">Opisanie:</label>
                     </div>
                     <div class="mb-4">
-                        <label class="color-white" for="deadline">Dead_line</label>
+                        <label class="color-coral" for="deadline">Dead_line</label>
                         <input class="mt-3" name="deadline" type="date" min="2023-01-01" v-model="dateDeadline">
                     </div>
                     <input v-if="!update" class="btn " type="submit" value="Создать">
