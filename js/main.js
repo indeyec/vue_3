@@ -1,5 +1,96 @@
 let eventBus = new Vue()
-
+// methods: {
+//     openUpdateNote() {
+//         let display = true
+//         eventBus.$emit('update-display', display)
+//         let deadline = this.note.dateDeadline.split('.')
+//         this.noteId = this.note.noteId
+//         this.title = this.note.title
+//         this.description = this.note.description
+//         this.dateDeadline = deadline[2] + '-' + deadline[1] + '-' + deadline[0]
+//     },
+//     modal() {
+//         let displayModal = false
+//         eventBus.$emit('getModal', displayModal)
+//     },
+// template: `
+//         <div>
+//             <div class="m-3" v-for="note in notes" 
+//             v-show="note.type == types ">
+//                 <div 
+//                     class="p-3 " 
+//                     :class="{ 
+//                         'border-success': note.compliteInTime, 
+//                         'border-danger': !note.compliteInTime && note.type == 'col-4', 
+//                         'border-primary': !note.compliteInTime, 
+//                         'border-warning': note.comment.length != 0,
+//                     }"
+// >
+//                     <h5>{{note.title}} 
+//                     ({{note.noteId}}) - <span style="color: red;"
+//                      v-on:click="deleteNote(note.noteId)">
+//                      X
+//                      </span>
+//                      </h5>
+//                     <p>{{ note.description }}</p>
+//                     <p><hr>
+//                     Дата создания: {{ note.dateCreate }}<br>
+//                     Дэдлайн: {{ note.dateDeadline }} - {{ note.compliteInTime }}<br>
+//                     <span v-if="note.dateUpdate.length != 0">
+//                     Redact date: {{ note.dateUpdate }}</span>
+//                     <hr>
+//                     </p>
+//                     <p v-if="note.comment.length > 0">
+//                     Comments:<br>{{ note.comment }}</p>
+//                     <div v-if="note.type != 'col-4'">
+//                         <span class="btn " 
+//                         v-on:click="noteUpdate(note)">
+//                         Redact
+//                         </span>
+//                         <div class="mt-2">
+//                             <span class="btn " 
+//                             v-on:click="changeType(note)">
+//                             Next
+//                             </span>
+//                             <span v-if="note.type == 'col-3'" class="btn " 
+//                             v-on:click="comeBack(note)">back</span>
+//                             <div class="mt-3" v-if="note.type == 'col-3'">
+//                                 <form>
+//                                     <div class="form-floating mb-3">
+//                                         <textarea class="form-control comeback" id="textarea" 
+//                                         style="height: 100px; resize: none;" v-model="comment"></textarea>
+//                                         <label for="textarea">Причина возврата:</label>
+//                                     </div>
+//                                 </form>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+// changeType(note) {
+//     if (note.type == 'col-1') {
+//         note.type = 'col-2'
+//     } else {
+//         if (note.type == 'col-2') {
+//             note.type = 'col-3'
+//         } else {
+//             if (note.type == 'col-3') {
+//                 note.type = 'col-4'
+//                 let dateComplite = new Date().toLocaleDateString().split('.')
+//                 let dateDeadline = note.dateDeadline.split('.')
+//                 note.dateComplite = dateComplite
+//                 if ( Number(dateComplite[2]) >= Number(dateDeadline[2]) ) {
+//                     if ( Number(dateComplite[1]) >= Number(dateDeadline[1]) ) {
+//                         if ( Number(dateComplite[0]) >= Number(dateDeadline[0]) ) {
+//                             note.compliteInTime = false
+//                         } else { note.compliteInTime = true }
+//                     } else { note.compliteInTime = true }
+//                 } else { note.compliteInTime = true }
+//             }
+//         }
+//     }
+// },
 Vue.component('create-note', {
     template: `
         <div>
@@ -19,7 +110,7 @@ Vue.component('create-note', {
                     </div>
                     <input v-if="!update" class="btn " type="submit" value="Создать">
                     <input v-if="update" class="btn btn-primary" v-on:click="updateNote" v-on:click="modal" value="Изменить">
-                    <div v-if="!update" class="btn  ms-4" v-on:click="modal">Закрыть форму</div>
+                    <div v-if="!update" class="btn  " v-on:click="modal">Закрыть форму</div>
                 </fieldset>
             </form>
         </div>
@@ -127,33 +218,50 @@ Vue.component('note', {
     
     template: `
         <div>
-            <div class="m-3" v-for="note in notes" v-show="note.type == types ">
+            <div class="m-3" v-for="note in notes" 
+            v-show="note.type == types ">
                 <div 
                     class="p-3 " 
                     :class="{ 
                         'border-success': note.compliteInTime, 
                         'border-danger': !note.compliteInTime && note.type == 'col-4', 
-                        'border-primary': !note.compliteInTime, 'border-warning': note.comment.length != 0,
+                        'border-primary': !note.compliteInTime, 
+                        'border-warning': note.comment.length != 0,
                     }"
-                >
-                    <h5>{{note.title}} ({{note.noteId}}) - <span style="color: red;" v-on:click="deleteNote(note.noteId)">X</span></h5>
+>
+                    <h5>{{note.title}} 
+                    ({{note.noteId}}) - <span style="color: red;"
+                     v-on:click="deleteNote(note.noteId)">
+                     X
+                     </span>
+                     </h5>
                     <p>{{ note.description }}</p>
                     <p><hr>
                     Дата создания: {{ note.dateCreate }}<br>
                     Дэдлайн: {{ note.dateDeadline }} - {{ note.compliteInTime }}<br>
-                    <span v-if="note.dateUpdate.length != 0">Redact date: {{ note.dateUpdate }}</span>
+                    <span v-if="note.dateUpdate.length != 0">
+                    Redact date: {{ note.dateUpdate }}</span>
                     <hr>
                     </p>
-                    <p v-if="note.comment.length > 0">Comments:<br>{{ note.comment }}</p>
+                    <p v-if="note.comment.length > 0">
+                    Comments:<br>{{ note.comment }}</p>
                     <div v-if="note.type != 'col-4'">
-                        <span class="btn " v-on:click="noteUpdate(note)">Redact</span>
+                        <span class="btn " 
+                        v-on:click="noteUpdate(note)">
+                        Redact
+                        </span>
                         <div class="mt-2">
-                            <span class="btn " v-on:click="changeType(note)">Next</span>
-                            <span v-if="note.type == 'col-3'" class="btn " v-on:click="comeBack(note)">back</span>
+                            <span class="btn " 
+                            v-on:click="changeType(note)">
+                            Next
+                            </span>
+                            <span v-if="note.type == 'col-3'" class="btn " 
+                            v-on:click="comeBack(note)">back</span>
                             <div class="mt-3" v-if="note.type == 'col-3'">
                                 <form>
                                     <div class="form-floating mb-3">
-                                        <textarea class="form-control comeback" id="textarea" style="height: 100px; resize: none;" v-model="comment"></textarea>
+                                        <textarea class="form-control comeback" id="textarea" 
+                                        style="height: 100px; resize: none;" v-model="comment"></textarea>
                                         <label for="textarea">Причина возврата:</label>
                                     </div>
                                 </form>
