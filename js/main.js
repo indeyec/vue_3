@@ -10,16 +10,16 @@ Vue.component('create-note', {
                 <fieldset>
                     <input class="form-control mb-3" type="text" placeholder="Name" v-model="title">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="textarea" style="height: 200px; resize: none;" v-model="description"></textarea>
+                        <textarea class="form-control" id="textarea" style="height: 100px; resize: none;" v-model="description"></textarea>
                         <label for="textarea">Opisanie:</label>
                     </div>
                     <div class="mb-4">
                         <label class="color-white" for="deadline">Dead_line</label>
                         <input class="mt-3" name="deadline" type="date" min="2023-01-01" v-model="dateDeadline">
                     </div>
-                    <input v-if="!update" class="btn btn-primary" type="submit" value="Создать">
+                    <input v-if="!update" class="btn " type="submit" value="Создать">
                     <input v-if="update" class="btn btn-primary" v-on:click="updateNote" v-on:click="modal" value="Изменить">
-                    <div v-if="!update" class="btn btn-danger ms-4" v-on:click="modal">Закрыть форму</div>
+                    <div v-if="!update" class="btn  ms-4" v-on:click="modal">Закрыть форму</div>
                 </fieldset>
             </form>
         </div>
@@ -129,14 +129,14 @@ Vue.component('note', {
         <div>
             <div class="m-3" v-for="note in notes" v-show="note.type == types ">
                 <div 
-                    class="p-3 border card-enter" 
+                    class="p-3 " 
                     :class="{ 
                         'border-success': note.compliteInTime, 
                         'border-danger': !note.compliteInTime && note.type == 'col-4', 
                         'border-primary': !note.compliteInTime, 'border-warning': note.comment.length != 0,
                     }"
                 >
-                    <h5>{{note.title}} ({{note.noteId}}) - <span style="color: red;" @click="deleteNote(note.noteId)">X</span></h5>
+                    <h5>{{note.title}} ({{note.noteId}}) - <span style="color: red;" v-on:click="deleteNote(note.noteId)">X</span></h5>
                     <p>{{ note.description }}</p>
                     <p><hr>
                     Дата создания: {{ note.dateCreate }}<br>
@@ -146,14 +146,14 @@ Vue.component('note', {
                     </p>
                     <p v-if="note.comment.length > 0">Comments:<br>{{ note.comment }}</p>
                     <div v-if="note.type != 'col-4'">
-                        <span class="btn btn-warning" v-on:click="noteUpdate(note)">Redact</span>
+                        <span class="btn " v-on:click="noteUpdate(note)">Redact</span>
                         <div class="mt-2">
-                            <span class="btn btn-success" v-on:click="changeType(note)">Next</span>
-                            <span v-if="note.type == 'col-3'" class="btn btn-danger" v-on:click="comeBack(note)">back</span>
+                            <span class="btn " v-on:click="changeType(note)">Next</span>
+                            <span v-if="note.type == 'col-3'" class="btn " v-on:click="comeBack(note)">back</span>
                             <div class="mt-3" v-if="note.type == 'col-3'">
                                 <form>
                                     <div class="form-floating mb-3">
-                                        <textarea class="form-control comeback" id="textarea" style="height: 200px; resize: none;" v-model="comment"></textarea>
+                                        <textarea class="form-control comeback" id="textarea" style="height: 100px; resize: none;" v-model="comment"></textarea>
                                         <label for="textarea">Причина возврата:</label>
                                     </div>
                                 </form>
